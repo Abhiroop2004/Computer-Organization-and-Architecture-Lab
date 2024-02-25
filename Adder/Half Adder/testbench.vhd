@@ -1,4 +1,4 @@
--- Testbench for OR gate
+-- Testbench for Half Adder
 library IEEE;
 use IEEE.std_logic_1164.all;
  
