@@ -34,22 +34,22 @@ begin
     a_in <= '0';
     b_in <= '1';
     wait for 1 ns;
-    assert(carry_out='1');
-    assert(sum_out='0');
+    assert(carry_out='0');
+    assert(sum_out='1');
     report "Fail 0/1" severity error;
 
     a_in <= '1';
     b_in <= '0';
     wait for 1 ns;
-    assert(carry_out='1');
-    assert(sum_out='0');
+    assert(carry_out='0');
+    assert(sum_out='1');
     report "Fail 1/0" severity error;
 
     a_in <= '1';
     b_in <= '1';
     wait for 1 ns;
-    assert(carry_out='0');
-    assert(sum_out='1');
+    assert(carry_out='1');
+    assert(sum_out='0');
     report "Fail 1/1" severity error;
     
     -- Clear inputs
