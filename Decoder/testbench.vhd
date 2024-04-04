@@ -1,53 +1,61 @@
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
+use IEEE.std_logic_1164.all;
+ 
 entity testbench is
-end testbench;
+-- empty
+end testbench; 
 
 architecture tb of testbench is
-component DECODER is
-Port ( A,B : in STD_LOGIC;
-Y3,Y2,Y1,Y0 : out STD_LOGIC);
+
+-- DUT component
+component decoder is
+port(
+  e, s1, s0 : in std_logic;
+  o : out std_logic_vector(3 downto 0) );
 end component;
 
-signal A, B, Y3, Y2, Y1, Y0 : STD_LOGIC;
+signal e, s1, s0 : std_logic;
+signal o : std_logic_vector(3 downto 0);
+
 
 begin
 
-DUT: DECODER port map(
-A => A, B => B,
-Y0 => Y0, Y1 => Y1,
-Y2 => Y2, Y3 => Y3);
+  -- Connect DUT
+  DUT: decoder port map(e, s1, s0, o);
 
-process 
-begin
+  process
+  begin
+    e  <= '0';
+    s1 <= 'X';
+    s0 <= 'X';
+    wait for 1 ns;
+    assert(o="0000") report "Fail 0/X/X" severity error;
+  
+    e  <= '1';
+    s1 <= '0';
+    s0 <= '0';
+    wait for 1 ns;
+    assert(o="0001") report "Fail 1/0/0" severity error;
+    
+    e  <= '1';
+    s1 <= '0';
+    s0 <= '1';
+    wait for 1 ns;
+    assert(o="0010") report "Fail 1/0/1" severity error;
+ 
+    e  <= '1';
+    s1 <= '1';
+    s0 <= '0';
+    wait for 1 ns;
+    assert(o="0100") report "Fail 1/1/0" severity error;
+  
+    e  <= '1';
+    s1 <= '1';
+    s0 <= '1';
+    wait for 1 ns;
+    assert(o="1000") report "Fail 1/1/1" severity error;
 
-A <= '0';
-B <= '0';
-wait for 10 ns;
-assert(Y0='1');
-
-A <= '0';
-B <= '1';
-wait for 10 ns;
-assert(Y1='1');
-
-A <= '1';
-B <= '0';
-wait for 10 ns;
-assert(Y2='1');
-
-A <= '1';
-B <= '1';
-wait for 10 ns;
-assert(Y3='1');
-
-A <= '0';
-B <= '0';
-assert false report "Test done." severity note;
-wait;
-
-end process;
+    assert false report "Test done." severity note;
+    wait;
+  end process;
 end tb;
