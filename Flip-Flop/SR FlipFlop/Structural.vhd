@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity SRFF is
-port(S, R : in std_logic;
+port(S, R, CLK : in std_logic;
 	Q, Qnot : out std_logic);
 end SRFF;
 
@@ -35,6 +35,15 @@ port(S, R : in std_logic;
 	Q, Qnot : out std_logic);
 end component;
 
+signal Q_temp, Qnot_temp : std_logic;
+
 begin
-  SR1: SRlatch port map(S, R, Q, Qnot);
+  SR1: SRlatch port map(S, R, Q_temp, Qnot_temp);
+   process (CLK)
+    begin
+        if rising_edge(CLK) then
+            Q <= Q_temp;
+            Qnot <= Qnot_temp;
+        end if;
+    end process;
 end Structural;
